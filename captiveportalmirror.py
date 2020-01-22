@@ -56,7 +56,7 @@ i2name = 'email'
 i3name = 'submit'
 
 portalpage = '/portal/login.php.html'
-credentials = [[ 'nikos' , 'fotiou'] ,
+credentials = [[ 'nikos' , 'fotiou'] , # please keep this here at least commented, its to cite them.
                 ['user1' , 'password'],
                 ['user2' , 'password2'],
                 ['hacker' , 'root']]
